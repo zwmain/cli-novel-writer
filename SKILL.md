@@ -27,7 +27,7 @@ description: 小说创作引擎（多核协同版）：一个统筹队长统领�
 
 发要点示例（派文笔写正文）：
 
-> 「角色：文笔子代理。完整规则见 references/agents/文笔/rules.md，落笔前先读它的 checklist.md 并回答 5 句（§1）。本次任务是：……」
+> 「角色：文笔子代理。完整规则见 references/agents/文笔/rules.md，落笔前先读它的 checklist.md 并回答 5 句（§2）。本次任务是：……」
 
 约束（铁律）：
 

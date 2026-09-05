@@ -396,7 +396,7 @@ git commit -m "docs: update README for module-based architecture"
 find references/agents -type f | sort
 ```
 
-Expected: 5 个子代理目录齐全；文笔 4 文件、复核 3 文件、剧情/人物/世界各 2 文件，共 14 个文件。
+Expected: 5 个子代理目录齐全；文笔 4 文件、复核 3 文件、剧情/人物/世界各 2 文件，共 13 个文件。
 
 - [ ] **Step 2: 校验 SKILL.md 内所有相对链接可点**
 

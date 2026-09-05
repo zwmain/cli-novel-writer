@@ -9,7 +9,8 @@ A **Claude Code skill** (`cli-novel-writer`) for multi-agent novel writing. When
 ## Tests
 
 ```bash
-python -m pytest tests/test_count_cjk.py -q    # full suite (10 tests, fast)
+python -m pytest tests/test_count_cjk.py -q    # count_cjk (10 tests)
+python -m pytest tests/ -q                     # full suite (count_cjk + check_dir + write_file, py & node)
 python -m pytest tests/test_count_cjk.py::test_mixed_cjk_only -q   # single test
 ```
 
@@ -35,6 +36,10 @@ The skill is split so that `SKILL.md` stays thin and each subagent's knowledge l
 
 ```bash
 python scripts/count_cjk.py <file> [--min N --max M]   # count CJK chars; exit 0=in-range, 1=out, 2=usage, 3=unreadable
+python scripts/check_dir.py <path> [--create]     # check/create dir; exit 0/1/2/3
+python scripts/write_file.py <path> <content>     # write file (recursive parent create); exit 0/1/2/3
+node scripts/check_dir.mjs <path> [--create]      # node equivalents (same CLI)
+node scripts/write_file.mjs <path> <content>
 ```
 
 ## Install (for real users, not needed for dev)

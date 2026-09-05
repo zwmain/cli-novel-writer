@@ -29,7 +29,7 @@
 │   ├─ 人物/  rules + checklist
 │   ├─ 世界/  rules + checklist
 │   └─ 复核/  rules + 六一致性 checklist + bad_examples
-└─ scripts/ count_cjk.py   字数统计工具（未变）
+└─ scripts/  count_cjk / check_dir / write_file 的 .py + .mjs 双实现辅助脚本
 ```
 
 ## 安装
@@ -59,7 +59,7 @@
 └─ 第1章-vN.md          改过的第N版
 ```
 
-（Python 可选：`scripts/count_cjk.py` 客观统计中文字数；无 Python 时模型估算并标注「估算」。）
+（脚本可选：`count_cjk.py` 客观统计字数；`check_dir.py/.mjs` 校验/创建目录；`write_file.py/.mjs` 写文件（父目录缺失自动递归建）。agent 自带文件/文件夹能力优先，脚本只在环境满足时作为辅助工具使用。）
 
 ## 章节版本管理
 

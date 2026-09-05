@@ -152,6 +152,10 @@ description: 小说创作引擎（多核协同版）：一个统筹队长统领�
 - 用户没给题材/梗概时，先问清题材、核心梗概、篇幅与节奏偏好，再启动。
 - 用大白话和用户沟通，术语先解释；每章动笔前向用户申请许可，不擅自连写多章。
 
-## 脚本工具
+## 脚本工具（辅助，环境满足才用）
 
-- `scripts/count_cjk.py`（技能包内）：统计中文字符数。Windows 用 `python scripts/count_cjk.py <文件>`，macOS/Linux 用 `python3 scripts/count_cjk.py <文件>`；可选 `--min N --max M` 自定义区间。用于文笔自检与复核判决。
+- `scripts/count_cjk.py`：统计中文字符数。Windows 用 `python scripts/count_cjk.py <文件>`，macOS/Linux 用 `python3 scripts/count_cjk.py <文件>`；可选 `--min N --max M`。用于文笔自检与复核判决。
+- `scripts/check_dir.py` / `scripts/check_dir.mjs`：校验目录是否存在，`--create` 时创建（嵌套路径一并创建）。`python scripts/check_dir.py [--create] <路径>`（node 版同 CLI：`node scripts/check_dir.mjs ...`）。
+- `scripts/write_file.py` / `scripts/write_file.mjs`：写入文件，父目录缺失时自动递归创建。`python scripts/write_file.py <路径> <内容>`（node 版同 CLI）。
+- 路径：绝对 / 相对执行目录 / `~` 主目录均可识别；相对以当前工作目录展开。
+- **脚本可用性**：agent 自带文件/文件夹操作能力优先；脚本是辅助工具，环境满足（有 Python 或 Node）才用，不满足则用 agent 自带能力，不做硬依赖。macOS/Linux 把 `python` 换成 `python3`。

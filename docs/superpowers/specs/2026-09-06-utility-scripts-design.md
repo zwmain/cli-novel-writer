@@ -17,7 +17,7 @@
 ## 已确认设计决策
 
 1. **脚本形态**：每个能力一个独立单文件脚本（`check_dir.py` / `write_file.py`），py / node 各一份。沿用 `count_cjk.py` 的退出码约定（0/1/2/3）。py 版写 pytest 单测。
-2. **Node 版本**：Node v25.8.1，绝对路径 `C:\Users\zwmai\AppData\Roaming\fnm\node-versions\v25.8.1\installation\node.exe`。node 不在 PATH，测试/文档通过此绝对路径调用，不假设 `node` 在 PATH。
+2. **Node 版本**：Node v25.8.1（`node -v` 返回 v25.8.1，位于 fnm 管理的 PATH）。测试/文档通过 `node` 命令调用（不假设在 PATH 之外）。
 3. **JS 单测**：node 脚本配等价单测，同一套用例参数化跨 py + js 两套实现跑。
 4. **辅助定位**：agent 自带文件/文件夹能力优先；脚本是辅助工具，环境满足才用，不满足不用（不做硬依赖）。运行时脚本自身不探测 OS，依赖模型按平台传参。
 5. **write_file 默认递归创建父目录**：不设 `--parent`/`--mkdir` 开关，`write_file.py <path> <content>` 直接默认父目录缺失就建。
@@ -93,7 +93,7 @@ Node 版 CLI 与 py 版逐字一致，仅解释器换 node：
 ## 测试
 
 - py 脚本：pytest 单测。用例覆盖：绝对 / 相对 / `~` 路径、目录存在 / 不存在 / 可创建 / 不可创建、文件写入、父目录缺失递归创建、退出码（0/1/2/3）、跨 OS 路径识别。
-- node 脚本：同一套用例参数化跨实现跑（py + js）。本机用绝对路径 node 跑。
+- node 脚本：同一套用例参数化跨实现跑（py + js）。本机 `node` 在 PATH 可直接调用。
 - 现有 `test_count_cjk.py` 保持不变，全绿。
 
 ## 边界与不做的事（YAGNI）

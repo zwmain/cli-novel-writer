@@ -11,7 +11,7 @@
 ## 环境事实（已核实）
 
 - Python 3.13.14（`python` 在 PATH）。
-- Node v25.8.1，绝对路径 `C:\Users\zwmai\AppData\Roaming\fnm\node-versions\v25.8.1\installation\node.exe`；**不在 PATH**（`node` 命令不可用）。
+- Node v25.8.1（`node -v` 返回 v25.8.1，在 PATH，由 fnm 管理）。`node` 命令可直接调用。
 - 现有脚本 `scripts/count_cjk.py` + `tests/test_count_cjk.py`（10 测试）保持不变。
 - 当前分支 `continuation`，工作区干净。
 
@@ -104,11 +104,10 @@ cat /tmp/wf_test/a/b/c.txt    # 应输出内容，父目录 a/b 已自动创建
 - 用 `export` 导出；`import { isAbsolute, resolve } from './pathresolve.mjs'`。
 - 顶层 `import os from 'node:os'`、`import path from 'node:path'`。
 
-**校验**（本机绝对路径 node）：
+**校验**（`node` 在 PATH）：
 ```
-"$NODE" -e "import('./scripts/pathresolve.mjs').then(m=>console.log(m.resolve('~/x','/tmp')))"
+node -e "import('./scripts/pathresolve.mjs').then(m=>console.log(m.resolve('~/x','/tmp')))"
 ```
-（`$NODE` = `C:\Users\zwmai\AppData\Roaming\fnm\node-versions\v25.8.1\installation\node.exe`）
 
 ## Task 5 — check_dir.mjs + write_file.mjs（node CLI 脚本）
 
@@ -127,9 +126,8 @@ cat /tmp/wf_test/a/b/c.txt    # 应输出内容，父目录 a/b 已自动创建
 **改动**：新建 `tests/test_check_dir.py`、`tests/test_write_file.py`（内含对 py 版子进程测 + node 版子进程测）。
 
 **实现要点**：
-- **不 import 函数**（要测真实副作用 + 退出码），用 `subprocess.run([sys.executable, 'scripts/check_dir.py', ...])` 跑 py 版；`subprocess.run([NODE, 'scripts/check_dir.mjs', ...])` 跑 node 版（NODE 取绝对路径，见下）。
-- Node 路径解析（跨平台）：
-  - 环境变量 `NODE_BIN` 优先；否则默认 `C:\Users\zwmai\AppData\Roaming\fnm\node-versions\v25.8.1\installation\node.exe`；若不存在则 `pytest.skip('node 不可用')`。
+- **不 import 函数**（要测真实副作用 + 退出码），用 `subprocess.run([sys.executable, 'scripts/check_dir.py', ...])` 跑 py 版；`subprocess.run(['node', 'scripts/check_dir.mjs', ...])` 跑 node 版（`node` 在 PATH）。
+- Node 可用性守卫：若 `shutil.which('node') is None` 则 `pytest.skip('node 不可用')`（跨平台，不在 PATH 时跳过，不硬编码绝对路径）。
 - 用例（同一套，参数化 cross py/js）：
   - check_dir：目录存在 → 0；不存在 → 1；`--create` 不存在 → 0 且创建；`--create` 已存在 → 0 幂等；无参数 → 2；相对路径（以 tmp_path 为 cwd）→ 正确识别。
   - write_file：写文件成功 → 0 且内容正确；父目录缺失 → 自动创建且 0；空内容 → 0 空文件；无参数 → 2；相对路径 → 写对位置。
@@ -171,6 +169,6 @@ cat /tmp/wf_test/a/b/c.txt    # 应输出内容，父目录 a/b 已自动创建
 
 ## 部署检查（SDD）
 
-- Node 绝对路径只在测试文件与文档中作为默认值；不硬编码进脚本逻辑。
+- Node 定位通过 `node`（在 PATH）；不可用时 `pytest.skip`。不硬编码绝对路径进脚本逻辑或测试。
 - 每个 Task 走 brief → report → review → fix 循环。
 - 汇总验收：`python -m pytest tests/ -q` 全绿；git clean；文档三处一致。

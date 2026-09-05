@@ -78,6 +78,7 @@ description: 小说创作引擎（多核协同版）：一个统筹队长统领�
 
 人物档案 JSON Schema（人物子代理专用，示例）：
 
+```json
 {
   "character_id": "ZC_001",
   "name": "张澈",
@@ -88,6 +89,7 @@ description: 小说创作引擎（多核协同版）：一个统筹队长统领�
   "arc_triggers": [{"trigger_event": "在废墟中找到妹妹的旧发绳（未见尸骨）", "new_trait": "从绝望颓废转为偏执的希望", "effective_chapter": "待触发"}],
   "growth_history": [{"chapter": "001", "change": "初登场，展现极强野外生存能力，但拒绝与人合作。"}]
 }
+```
 
 ## 章节版本管理（铁律）
 

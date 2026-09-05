@@ -20,6 +20,7 @@
 2. **Node 版本**：Node v25.8.1，绝对路径 `C:\Users\zwmai\AppData\Roaming\fnm\node-versions\v25.8.1\installation\node.exe`。node 不在 PATH，测试/文档通过此绝对路径调用，不假设 `node` 在 PATH。
 3. **JS 单测**：node 脚本配等价单测，同一套用例参数化跨 py + js 两套实现跑。
 4. **辅助定位**：agent 自带文件/文件夹能力优先；脚本是辅助工具，环境满足才用，不满足不用（不做硬依赖）。运行时脚本自身不探测 OS，依赖模型按平台传参。
+5. **write_file 默认递归创建父目录**：不设 `--parent`/`--mkdir` 开关，`write_file.py <path> <content>` 直接默认父目录缺失就建。
 
 ## 脚本集构成
 
@@ -60,8 +61,8 @@ python scripts/check_dir.py <path>
 # 目录：检查 + 创建。存在或成功创建 → 0；无法创建 → 1。
 python scripts/check_dir.py --create <path>
 
-# 写文件：父目录缺失则递归创建。成功 → 0；失败 → 1。
-python scripts/write_file.py --parent <path> <content>
+# 写文件：默认递归创建（父目录缺失则自动建，无需开关）。成功 → 0；失败 → 1。
+python scripts/write_file.py <path> <content>
 
 # 辅助：count_cjk（已有）
 python scripts/count_cjk.py <文件> [--min N] [--max M]
@@ -79,6 +80,7 @@ Node 版 CLI 与 py 版逐字一致，仅解释器换 node：
 - 相对路径（macOS/Linux）：`x/y`、`./x`、`../x`。
 - `~` 展开用户主目录（`os.path.expanduser` / Node `os.homedir`）。
 - 相对路径以 cwd 展开。
+- **write_file 默认递归创建**父目录（`os.makedirs(exist_ok=True)` / `fs.mkdirSync(p, {recursive:true})`），无 `--parent`/`--mkdir` 开关。
 
 不展开 `$VAR` / `%VAR%` 环境变量。
 

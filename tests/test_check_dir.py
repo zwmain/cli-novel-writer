@@ -127,3 +127,27 @@ def test_file_is_not_dir_returns_1(impl, tmp_path):
     f.write_text("x", encoding="utf-8")
     result = _run(impl, [str(f)], tmp_path)
     assert result.returncode == 1
+
+
+@pytest.mark.parametrize("impl", ["py", "node"])
+def test_unknown_flag_usage_error(impl, tmp_path):
+    # 未知 `-` 前缀参数 → 用法错误（退出码 2）。
+    result = _run(impl, ["--bogus"], tmp_path)
+    assert result.returncode == 2
+    assert "用法" in result.stderr
+
+
+@pytest.mark.parametrize("impl", ["py", "node"])
+def test_extra_trailing_arg_usage_error(impl, tmp_path):
+    # 尾随多余参数 → 用法错误（退出码 2）。
+    result = _run(impl, ["a", "b"], tmp_path)
+    assert result.returncode == 2
+    assert "用法" in result.stderr
+
+
+@pytest.mark.parametrize("impl", ["py", "node"])
+def test_create_extra_trailing_arg_usage_error(impl, tmp_path):
+    # --create 后超出一个路径 → 用法错误（退出码 2）。
+    result = _run(impl, ["--create", "a", "b"], tmp_path)
+    assert result.returncode == 2
+    assert "用法" in result.stderr

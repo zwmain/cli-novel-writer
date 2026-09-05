@@ -31,6 +31,16 @@ function main(argv) {
     process.stderr.write(USAGE + '\n');
     return 2;
   }
+  // 未知 `-` 前缀参数（非 --create/-h/--help）→ 用法错误。
+  if (args[i].startsWith('-')) {
+    process.stderr.write(USAGE + '\n');
+    return 2;
+  }
+  // 超出预期（--create 标志后恰 1 个路径，或无标志恰 1 个路径）的尾随参数 → 用法错误。
+  if (i + 1 < args.length) {
+    process.stderr.write(USAGE + '\n');
+    return 2;
+  }
   const path = args[i];
   let cwd;
   try {

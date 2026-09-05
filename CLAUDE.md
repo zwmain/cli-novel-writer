@@ -23,7 +23,7 @@ The skill is split so that `SKILL.md` stays thin and each subagent's knowledge l
 - **`references/agents/<角色>/`** — one directory per subagent (文笔/复核/剧情/人物/世界). Each has `rules.md` (the full role prompt, migrated verbatim from the original SKILL.md) + `checklist.md` (pre-task/verdict checks). Only **文笔** has `good_examples.md`/`bad_examples.md`, and **复核** has `bad_examples.md` — those two roles are the ones where examples correct output best.
 - **Dispatch protocol**: when the队长 dispatches a subagent, it sends role key-points + a module path (`references/agents/文笔/rules.md`) rather than pasting the full rule text; the subagent reads its own module. Keep this "发要点+路径" model intact — don't re-embed role text into SKILL.md.
 - **Editorial dependency to respect**: the「复核六一致性」list in `SKILL.md` must stay identical to the six in `references/agents/复核/checklist.md` (剧情逻辑/人物目标/情绪与关系/身体与信息状态/场景与转场/章末承接). The「去 AI 味」section in SKILL.md must point at `文笔/checklist.md`. If one changes, update the other.
-- **Project output**: when a novel is started, the队长 creates `outputs/日期-项目名/` with 叙事宪法/世界规则白皮书/人物档案.json/伏笔台账/章节目录/章节正文 (`第N章-vX.md`, versioned — never overwrite, only add higher X).
+- **Project output**: when a novel is started, the队长 resolves the 项目根 directory (user-specified — absolute/relative cwd/`~` — or default `cwd/日期-项目名/`), writes `项目索引.md` (project name, created date, **absolute** root path) for resume-lookup, and creates 叙事宪法/世界规则白皮书/人物档案.json/伏笔台账/章节目录/章节正文 (`第N章-vX.md`, versioned — never overwrite, only add higher X). Path resolution rules live only in SKILL.md's 本地存储规范.
 
 ## Key conventions
 

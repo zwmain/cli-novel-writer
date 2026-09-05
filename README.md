@@ -13,6 +13,25 @@
 | 文笔子代理 | 唯一执笔；每章约 2000–4000 字                                                 |
 | 复核子代理 | 三色灯判决；字数用 count_cjk.py 客观核对                                      |
 
+## 知识架构
+
+- **主文件路由**：`SKILL.md` 是唯一入口——负责定位、派单协议、铁律与工作流；不承载岗位细节，只发要点并指向各子代理模块路径。
+- **子代理模块下沉**：5 个岗位的完整规则各自下沉到 `references/agents/<角色>/`，子代理派单时读自己的 rules/checklist，规则不再堆积在主文件里。
+- **精选例库**：仅「文笔」配 `good_examples.md`/`bad_examples.md`、「复核」配 `bad_examples.md`——写正文与复核这两个岗位靠范例纠偏最有效。
+
+目录结构：
+
+```text
+├─ SKILL.md                主文件：定位 + 派单协议 + 铁律 + 工作流
+├─ references/agents/      5 个子代理模块
+│   ├─ 文笔/  rules + checklist + good/bad_examples
+│   ├─ 剧情/  rules + checklist
+│   ├─ 人物/  rules + checklist
+│   ├─ 世界/  rules + checklist
+│   └─ 复核/  rules + 六一致性 checklist + bad_examples
+└─ scripts/ count_cjk.py   字数统计工具（未变）
+```
+
 ## 安装
 
 - Windows（PowerShell）：在仓库目录执行 `powershell -ExecutionPolicy Bypass -File install.ps1`
@@ -49,7 +68,7 @@
 
 ## 想改它
 
-全部提示词在 SKILL.md 里；改完保存，新会话生效。卸载：删掉 ~/.claude/skills/cli-novel-writer/ 整个文件夹。
+全部提示词在 SKILL.md + references/agents/ 里；子代理规则在 references/agents/<角色>/rules.md。改完保存，新会话生效。卸载：删掉 ~/.claude/skills/cli-novel-writer/ 整个文件夹。
 
 ## 许可
 

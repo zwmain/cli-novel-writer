@@ -9,12 +9,12 @@ A **Claude Code skill** (`cli-novel-writer`) for multi-agent novel writing. When
 ## Tests
 
 ```bash
-python -m pytest tests/test_count_cjk.py -q    # count_cjk (10 tests)
+python -m pytest tests/test_count_cjk.py -q    # count_cjk (10 tests, py unit)
 python -m pytest tests/ -q                     # full suite (count_cjk + check_dir + write_file, py & node)
-python -m pytest tests/test_count_cjk.py::test_mixed_cjk_only -q   # single test
+python -m pytest tests/test_count_cjk_node.py -q   # count_cjk py & node parity via subprocess
 ```
 
-Python is optional at runtime — `count_cjk.py` is only used by subagents to verify per-chapter word counts.
+Python is optional at runtime — `count_cjk.py` (or its node twin `count_cjk.mjs`) is only used by subagents to verify per-chapter word counts.
 
 ## Architecture (the big picture)
 
@@ -30,12 +30,13 @@ The skill is split so that `SKILL.md` stays thin and each subagent's knowledge l
 
 - **All skill content is in Chinese** — write prompts/checklists/examples in Chinese, matching the existing files.
 - **The `文笔` good_examples are sourced from a real corpus** (`Chinese-WebNovel-Skill/analysis/excerpts.csv`, excerpt_type 开头钩子/高张力对白/结尾余韵). When adding examples, use real verbatim excerpts from that CSV — never invent them — and keep「该学什么」about structure/rhythm, not style.
-- `scripts/count_cjk.py` and `tests/` are deliberately unchanged by the refactor; keep them stable.
+- `scripts/count_cjk.py` / `scripts/count_cjk.mjs` and `tests/` are deliberately kept minimal; add node twins by following the existing `.mjs` pattern (parity tests in `tests/test_*_node.py`).
 
 ## Local dev commands
 
 ```bash
 python scripts/count_cjk.py <file> [--min N --max M]   # count CJK chars; exit 0=in-range, 1=out, 2=usage, 3=unreadable
+node scripts/count_cjk.mjs <file> [--min N --max M]    # node equivalent (same CLI)
 python scripts/check_dir.py <path> [--create]     # check/create dir; exit 0/1/2/3
 python scripts/write_file.py <path> <content>     # write file (recursive parent create); exit 0/1/2/3
 node scripts/check_dir.mjs <path> [--create]      # node equivalents (same CLI)
